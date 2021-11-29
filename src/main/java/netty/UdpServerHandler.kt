@@ -18,7 +18,10 @@ class UdpServerHandler : SimpleChannelInboundHandler<DatagramPacket>() {
         val byteBuf = Unpooled.copiedBuffer("已经接收到消息!".toByteArray(StandardCharsets.UTF_8))
         val fuck=packet.sender()
         val ff=fuck.port
-        println("服务端接收到消息ff："+ff);
+        var gg=fuck.address.toString()
+
+        gg = gg.substring(gg.lastIndexOf("/") + 1 );//IP="127.0.0.1"
+        println("服务端接收到消息ff："+ff+"    dfg  "+gg);
         ctx.writeAndFlush(DatagramPacket(byteBuf, packet.sender()))
     }
 }
