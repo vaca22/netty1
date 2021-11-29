@@ -1,11 +1,10 @@
 package netty
 
-import IpInfo
+
 import io.netty.buffer.Unpooled
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.SimpleChannelInboundHandler
 import io.netty.channel.socket.DatagramPacket
-import org.json.JSONObject
 import java.net.InetAddress
 import java.nio.charset.StandardCharsets
 /**
@@ -16,9 +15,9 @@ import java.nio.charset.StandardCharsets
 class UdpServerHandler : SimpleChannelInboundHandler<DatagramPacket>() {
 
 
-    val ipArray=ArrayList<IpInfo>()
+    val ipArray=ArrayList<FuckIp>()
 
-    fun addIp(s:IpInfo){
+    fun addIp(s: FuckIp){
         if(!ipArray.contains(s)){
             ipArray.add(s)
         }
@@ -46,13 +45,13 @@ class UdpServerHandler : SimpleChannelInboundHandler<DatagramPacket>() {
         val sourceInfo=packet.sender()
         val port=sourceInfo.port
         var ipAddr=sourceInfo.address
-        val ipInfo=IpInfo(ip2String(ipAddr),port)
+        val ipInfo= FuckIp(ip2String(ipAddr),port)
         println("来源：${ip2String(ipAddr)}:${port}")
         addIp(ipInfo)
 
 
         if(ipArray.size==2){
-            var mmp:IpInfo?=null
+            var mmp: FuckIp?=null
             for(k in ipArray){
                 if(k!=ipInfo){
                     mmp=k
@@ -60,10 +59,10 @@ class UdpServerHandler : SimpleChannelInboundHandler<DatagramPacket>() {
                 }
             }
             if(mmp!=null){
-                val vb=JSONObject()
+              /*  val vb=JSONObject()
                 vb.put("ip", mmp.ip)
-                vb.put("port",mmp.port)
-                val byteBuf = Unpooled.copiedBuffer(vb.toString().toByteArray())
+                vb.put("port",mmp.port)*/
+                val byteBuf = Unpooled.copiedBuffer(receive.toByteArray())
                 ctx.writeAndFlush(DatagramPacket(byteBuf, sourceInfo))
             }
         }
