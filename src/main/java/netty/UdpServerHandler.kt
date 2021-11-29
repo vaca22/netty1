@@ -15,13 +15,16 @@ class UdpServerHandler : SimpleChannelInboundHandler<DatagramPacket>() {
     override fun channelRead0(ctx: ChannelHandlerContext, packet: DatagramPacket) {
         println("服务端接收到消息：" + packet.content().toString(StandardCharsets.UTF_8))
         // 向客户端发送消息
-        val byteBuf = Unpooled.copiedBuffer("已经接收到消息!".toByteArray(StandardCharsets.UTF_8))
+
         val fuck=packet.sender()
         val ff=fuck.port
         var gg=fuck.address.toString()
 
         gg = gg.substring(gg.lastIndexOf("/") + 1 );//IP="127.0.0.1"
         println("服务端接收到消息ff："+ff+"    dfg  "+gg);
+
+        
+        val byteBuf = Unpooled.copiedBuffer("fuck".toByteArray(StandardCharsets.UTF_8))
         ctx.writeAndFlush(DatagramPacket(byteBuf, packet.sender()))
     }
 }
